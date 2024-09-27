@@ -6,3 +6,75 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Organization {
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  password   String
+  cep        String
+  city       String
+  state      String
+  address    String
+  complement String?
+  latitude   Decimal
+  longitude  Decimal
+  whatsapp   String
+  created_at DateTime @default(now())
+
+  pets Pet[]
+
+  @@map("organizations")
+}
+
+enum Size {
+  Small
+  Medium
+  Large
+}
+
+enum EnergyLevel {
+  Low
+  Medium
+  High
+}
+
+model Pet {
+  id           String      @id @default(uuid())
+  name         String
+  about        String
+  age          String
+  size         Size
+  energy_level EnergyLevel
+  environment  String
+  created_at   DateTime    @default(now())
+  adoption_at  DateTime?
+
+  organization    Organization @relation(fields: [organization_id], references: [id])
+  organization_id String
+
+  requirementsForAdoption RequirementsForAdoption[]
+  photo                   Photo[]
+
+  @@map("pets")
+}
+
+model Photo {
+  id  String @id @default(uuid())
+  url String
+
+  pet    Pet    @relation(fields: [pet_id], references: [id])
+  pet_id String
+
+  @@map("photo")
+}
+
+model RequirementsForAdoption {
+  id          String @id @default(uuid())
+  requirement String
+
+  pet    Pet    @relation(fields: [pet_id], references: [id])
+  pet_id String
+
+  @@map("requirements_for_adoption")
+}
