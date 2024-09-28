@@ -2,11 +2,12 @@
   "name": "find-a-friend-api",
   "version": "1.0.0",
   "description": "FindAFriend API.",
-  "main": "index.js",
   "scripts": {
     "dev": "tsx watch --env-file .env src/server.ts",
     "start": "node build/server.js",
-    "build": "tsup src --out-dir build"
+    "build": "tsup src --out-dir build",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -14,14 +15,18 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.2",
     "@tsconfig/node20": "20.1.4",
+    "@types/bcryptjs": "2.4.6",
     "@types/node": "22.7.2",
     "prisma": "5.20.0",
     "tsup": "^8.3.0",
     "tsx": "4.19.1",
-    "typescript": "5.6.2"
+    "typescript": "5.6.2",
+    "vite-tsconfig-paths": "5.0.1",
+    "vitest": "2.1.1"
   },
   "dependencies": {
     "@prisma/client": "5.20.0",
+    "bcryptjs": "2.4.3",
     "fastify": "5.0.0",
     "zod": "3.23.8"
   }

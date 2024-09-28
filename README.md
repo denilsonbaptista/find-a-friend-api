@@ -8,7 +8,7 @@ FindAFriend API.
 - [ ] It should be possible to list all available pets for adoption in a city
 - [ ] It should be possible to filter pets by their characteristics
 - [ ] It should be possible to view details of a pet for adoption
-- [ ] It should be possible to register as an ORG
+- [x] It should be possible to register as an ORG
 - [ ] It should be possible to log in as an ORG
 
 ## Business Rules (BR)
