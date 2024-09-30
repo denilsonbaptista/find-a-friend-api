@@ -8,6 +8,16 @@ export class InMemoryOrganizationsRepository
 {
   public items: Organization[] = []
 
+  async findById(id: string): Promise<Organization | null> {
+    const organization = this.items.find(item => item.id === id)
+
+    if (!organization) {
+      return null
+    }
+
+    return organization
+  }
+
   async findByEmail(email: string): Promise<Organization | null> {
     const organization = this.items.find(item => item.email === email)
 
