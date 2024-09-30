@@ -7,21 +7,7 @@ import { RegisterOrganizationUseCase } from './register-organizations'
 let organizationRepository: InMemoryOrganizationsRepository
 let sut: RegisterOrganizationUseCase
 
-interface OrganizationDataRequest {
-  name: string
-  email: string
-  password: string
-  cep: string
-  city: string
-  state: string
-  address: string
-  complement: string | null
-  latitude: number
-  longitude: number
-  whatsapp: string
-}
-
-const organizationData: OrganizationDataRequest = {
+const organizationData = {
   name: 'Organization XYZ',
   email: 'contact@xyz.com',
   password: '123456',
