@@ -18,7 +18,7 @@ interface RegisterPetUseCaseRequest {
   photos: string[]
 }
 
-type RegisterPetUseCaseResponse = {
+interface RegisterPetUseCaseResponse {
   pet: Pet
   photos: Photo[]
 }
