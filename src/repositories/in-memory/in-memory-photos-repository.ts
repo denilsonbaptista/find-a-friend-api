@@ -6,6 +6,10 @@ import type { PhotosRepository } from '../photos-repository'
 export class InMemoryPhotosRepository implements PhotosRepository {
   public items: Photo[] = []
 
+  async findById(id: string): Promise<Photo[]> {
+    return this.items.filter(item => item.pet_id.includes(id))
+  }
+
   async createUrl(data: Prisma.PhotoUncheckedCreateInput): Promise<Photo> {
     const photo = {
       id: randomUUID(),
