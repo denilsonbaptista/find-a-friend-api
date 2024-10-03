@@ -1,5 +1,6 @@
 import type { PetsRepository } from '@/repositories/pets-repository'
 import type { Pet, Photo } from '@prisma/client'
+
 import { RequiredFieldError } from './errors/required-field-error'
 
 interface SearchPetsUseCaseRequest {
@@ -26,9 +27,7 @@ export class SearchPets {
     environment,
     page,
   }: SearchPetsUseCaseRequest): Promise<SearchPetsUseCaseResponse> {
-    if (!city) {
-      throw new RequiredFieldError('city')
-    }
+    if (!city) throw new RequiredFieldError('city')
 
     const pets = await this.petsRepository.searchMany(
       {

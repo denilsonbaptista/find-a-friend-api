@@ -37,41 +37,28 @@ describe('Search Pets Use Case', () => {
       whatsapp: '+5511999999999',
     })
 
-    const petOne = await petsRepository.create({
-      name: 'Nina',
-      about: 'Nina is a very cute little dog',
-      age: '5',
-      size: 'Small' as const,
-      energy_level: 'High' as const,
-      environment: 'Apartment',
-      organization_id: organization.id,
-    })
-
-    const petTwo = await petsRepository.create({
-      name: 'Nina',
-      about: 'Nina is a very cute little dog',
-      age: '5',
-      size: 'Small' as const,
-      energy_level: 'High' as const,
-      environment: 'Apartment',
-      organization_id: organization.id,
-    })
-
-    for (let i = 0; i < 5; i++) {
-      await photosRepository.createUrl({
-        url: 'nina-photo.jpg',
-        pet_id: petOne.id,
+    for (let i = 0; i < 3; i++) {
+      const pet = await petsRepository.create({
+        name: `Nina 0${i}`,
+        about: 'Nina is a very cute little dog',
+        age: 'Puppy',
+        size: 'Small' as const,
+        energy_level: 'High' as const,
+        environment: 'Apartment',
+        organization_id: organization.id,
       })
 
-      await photosRepository.createUrl({
-        url: 'nina-photo.jpg',
-        pet_id: petTwo.id,
-      })
+      for (let i = 0; i < 5; i++) {
+        await photosRepository.createUrl({
+          url: 'nina-photo.jpg',
+          pet_id: pet.id,
+        })
+      }
     }
 
     const searchByFull = await sut.execute({
       city: 'São Paulo',
-      age: '5',
+      age: 'Puppy',
       size: 'Small',
       energyLevel: 'High',
       environment: 'Apartment',
@@ -80,8 +67,8 @@ describe('Search Pets Use Case', () => {
 
     expect(searchByFull.pets[0]).toEqual(
       expect.objectContaining({
-        name: 'Nina',
-        age: '5',
+        name: 'Nina 00',
+        age: 'Puppy',
         photos: expect.arrayContaining([
           expect.objectContaining({
             url: 'nina-photo.jpg',
@@ -97,8 +84,8 @@ describe('Search Pets Use Case', () => {
 
     expect(searchByCity.pets[0]).toEqual(
       expect.objectContaining({
-        name: 'Nina',
-        age: '5',
+        name: 'Nina 00',
+        age: 'Puppy',
         photos: expect.arrayContaining([
           expect.objectContaining({
             url: 'nina-photo.jpg',
@@ -109,14 +96,14 @@ describe('Search Pets Use Case', () => {
 
     const searchByAge = await sut.execute({
       city: 'São Paulo',
-      age: '5',
+      age: 'Puppy',
       page: 1,
     })
 
     expect(searchByAge.pets[0]).toEqual(
       expect.objectContaining({
-        name: 'Nina',
-        age: '5',
+        name: 'Nina 00',
+        age: 'Puppy',
         photos: expect.arrayContaining([
           expect.objectContaining({
             url: 'nina-photo.jpg',
@@ -133,7 +120,7 @@ describe('Search Pets Use Case', () => {
 
     expect(searchBySize.pets[0]).toEqual(
       expect.objectContaining({
-        name: 'Nina',
+        name: 'Nina 00',
         size: 'Small',
         photos: expect.arrayContaining([
           expect.objectContaining({
@@ -151,7 +138,7 @@ describe('Search Pets Use Case', () => {
 
     expect(searchByEnergyLevel.pets[0]).toEqual(
       expect.objectContaining({
-        name: 'Nina',
+        name: 'Nina 00',
         energy_level: 'High',
         photos: expect.arrayContaining([
           expect.objectContaining({
@@ -169,7 +156,7 @@ describe('Search Pets Use Case', () => {
 
     expect(searchByEnvironment.pets[0]).toEqual(
       expect.objectContaining({
-        name: 'Nina',
+        name: 'Nina 00',
         environment: 'Apartment',
         photos: expect.arrayContaining([
           expect.objectContaining({
@@ -199,7 +186,7 @@ describe('Search Pets Use Case', () => {
       const pet = await petsRepository.create({
         name: 'Nina',
         about: 'Nina is a very cute little dog',
-        age: '5',
+        age: 'Puppy',
         size: 'Small' as const,
         energy_level: 'High' as const,
         environment: 'Apartment',
@@ -221,7 +208,7 @@ describe('Search Pets Use Case', () => {
     expect(pets[0]).toEqual(
       expect.objectContaining({
         name: 'Nina',
-        age: '5',
+        age: 'Puppy',
         photos: expect.arrayContaining([
           expect.objectContaining({
             url: 'nina-photo.jpg',

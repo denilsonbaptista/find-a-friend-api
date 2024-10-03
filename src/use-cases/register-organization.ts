@@ -44,9 +44,7 @@ export class RegisterOrganizationUseCase {
     const userWithSameEmail =
       await this.organizationRepository.findByEmail(email)
 
-    if (userWithSameEmail) {
-      throw new OrganizationAlreadyExistsError()
-    }
+    if (userWithSameEmail) throw new OrganizationAlreadyExistsError()
 
     const organization = await this.organizationRepository.create({
       name,

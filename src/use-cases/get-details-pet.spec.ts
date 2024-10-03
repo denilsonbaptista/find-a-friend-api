@@ -67,8 +67,6 @@ describe('View details of a pet for adoption', () => {
 
     const petDetails = await sut.execute({ petId: pet.id })
 
-    console.log(JSON.stringify(petDetails, null, 2))
-
     expect(petDetails).toEqual(
       expect.objectContaining({
         pet: expect.objectContaining({

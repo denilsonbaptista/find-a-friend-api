@@ -49,9 +49,7 @@ export class RegisterPetUseCase {
     const organization =
       await this.organizationRepository.findById(organizationId)
 
-    if (!organization) {
-      throw new OrganizationNotFoundError()
-    }
+    if (!organization) throw new OrganizationNotFoundError()
 
     const pet = await this.petRepository.create({
       name,
@@ -63,19 +61,20 @@ export class RegisterPetUseCase {
       organization_id: organizationId,
     })
 
-    if (!photos || photos.length === 0 || photos.some(photo => !photo.trim())) {
+    if (!photos || photos.length === 0 || photos.some(photo => !photo.trim()))
       throw new NoPhotoProvidedError()
-    }
 
     const diskStorage = new DiskStorage()
 
     const savedPhotos = await Promise.all(
       photos.map(async photo => {
         const filename = await diskStorage.saveFile(photo)
+
         const savedPhoto = await this.photosRepository.createUrl({
           url: filename,
           pet_id: pet.id,
         })
+
         return savedPhoto
       })
     )
@@ -87,6 +86,7 @@ export class RegisterPetUseCase {
             requirement,
             pet_id: pet.id,
           })
+
         return savedRequirement
       })
     )

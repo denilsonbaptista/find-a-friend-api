@@ -37,9 +37,7 @@ export class GetDetailsPet {
   }: GetDetailsPetUseCaseRequest): Promise<GetDetailsPetUseCaseResponse> {
     const pet = await this.petsRepository.findById(petId)
 
-    if (!pet) {
-      throw new PetNotFoundError()
-    }
+    if (!pet) throw new PetNotFoundError()
 
     const photos = await this.photosRepository.findById(pet.id)
 
@@ -47,9 +45,7 @@ export class GetDetailsPet {
       pet.organization_id
     )
 
-    if (!organization) {
-      throw new OrganizationNotFoundError()
-    }
+    if (!organization) throw new OrganizationNotFoundError()
 
     const requirementsForAdoption =
       await this.requirementsForAdoptionRepository.findById(pet.id)

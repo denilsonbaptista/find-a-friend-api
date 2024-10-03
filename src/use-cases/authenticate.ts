@@ -22,15 +22,11 @@ export class AuthenticateUseCase {
   }: AuthenticateUseCaseRequest): Promise<AuthenticateUseCaseResponse> {
     const organization = await this.organizationRepository.findByEmail(email)
 
-    if (!organization) {
-      throw new InvalidCredentialsError()
-    }
+    if (!organization) throw new InvalidCredentialsError()
 
     const doesPasswordMatches = await compare(password, organization.password)
 
-    if (!doesPasswordMatches) {
-      throw new InvalidCredentialsError()
-    }
+    if (!doesPasswordMatches) throw new InvalidCredentialsError()
 
     return {
       organization,

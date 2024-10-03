@@ -1,6 +1,6 @@
 import type { Pet, Photo, Prisma } from '@prisma/client'
 
-export interface SearchManyParams {
+export type SearchManyParams = {
   city: string
   age?: string
   size?: 'Small' | 'Medium' | 'Large'

@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto'
-import type { InMemoryOrganizationsRepository } from './in-memory-organizations-repository'
 
 import type { Pet, Photo, Prisma } from '@prisma/client'
 import type { PetsRepository, SearchManyParams } from '../pets-repository'
+import type { InMemoryOrganizationsRepository } from './in-memory-organizations-repository'
 import type { InMemoryPhotosRepository } from './in-memory-photos-repository'
 
 export class InMemoryPetsRepository implements PetsRepository {
