@@ -1,7 +1,8 @@
 import type { OrganizationsRepository } from '@/repositories/organizations-repository'
 import type { PetsRepository } from '@/repositories/pets-repository'
 import type { PhotosRepository } from '@/repositories/photos-repository'
-import type { Pet, Photo } from '@prisma/client'
+import type { RequirementsForAdoptionRepository } from '@/repositories/requirements-for-adoption-repository'
+import type { Pet, Photo, RequirementsForAdoption } from '@prisma/client'
 
 import { DiskStorage } from '@/providers/disk-storage'
 import { NoPhotoProvidedError } from './errors/no-photo-provided-error'
@@ -16,18 +17,22 @@ interface RegisterPetUseCaseRequest {
   environment: string
   organizationId: string
   photos: string[]
+  requirementsForAdoption: string[]
 }
 
 interface RegisterPetUseCaseResponse {
-  pet: Pet
-  photos: Photo[]
+  pet: Pet & {
+    photos: Photo[]
+    requirements_for_adoption: RequirementsForAdoption[]
+  }
 }
 
 export class RegisterPetUseCase {
   constructor(
     private petRepository: PetsRepository,
+    private photosRepository: PhotosRepository,
     private organizationRepository: OrganizationsRepository,
-    private photosRepository: PhotosRepository
+    private requirementsForAdoptionRepository: RequirementsForAdoptionRepository
   ) {}
 
   async execute({
@@ -39,6 +44,7 @@ export class RegisterPetUseCase {
     environment,
     organizationId,
     photos,
+    requirementsForAdoption,
   }: RegisterPetUseCaseRequest): Promise<RegisterPetUseCaseResponse> {
     const organization =
       await this.organizationRepository.findById(organizationId)
@@ -74,9 +80,23 @@ export class RegisterPetUseCase {
       })
     )
 
+    const savedRequirementsForAdoption = await Promise.all(
+      requirementsForAdoption.map(async requirement => {
+        const savedRequirement =
+          await this.requirementsForAdoptionRepository.create({
+            requirement,
+            pet_id: pet.id,
+          })
+        return savedRequirement
+      })
+    )
+
     return {
-      pet,
-      photos: savedPhotos,
+      pet: {
+        ...pet,
+        photos: savedPhotos,
+        requirements_for_adoption: savedRequirementsForAdoption,
+      },
     }
   }
 }
