@@ -13,7 +13,7 @@ interface SearchPetsUseCaseRequest {
 }
 
 interface SearchPetsUseCaseResponse {
-  pets: (Pet & { photos: Photo[] })[]
+  pets: (Pet & { photo: Photo[] })[]
 }
 
 export class SearchPets {

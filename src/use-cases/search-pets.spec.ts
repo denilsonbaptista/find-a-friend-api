@@ -86,7 +86,7 @@ describe('Search Pets Use Case', () => {
       expect.objectContaining({
         name: 'Nina 00',
         age: 'Puppy',
-        photos: expect.arrayContaining([
+        photo: expect.arrayContaining([
           expect.objectContaining({
             url: 'nina-photo.jpg',
           }),
@@ -103,7 +103,7 @@ describe('Search Pets Use Case', () => {
       expect.objectContaining({
         name: 'Nina 00',
         age: 'Puppy',
-        photos: expect.arrayContaining([
+        photo: expect.arrayContaining([
           expect.objectContaining({
             url: 'nina-photo.jpg',
           }),
@@ -121,7 +121,7 @@ describe('Search Pets Use Case', () => {
       expect.objectContaining({
         name: 'Nina 00',
         age: 'Puppy',
-        photos: expect.arrayContaining([
+        photo: expect.arrayContaining([
           expect.objectContaining({
             url: 'nina-photo.jpg',
           }),
@@ -139,7 +139,7 @@ describe('Search Pets Use Case', () => {
       expect.objectContaining({
         name: 'Nina 00',
         size: 'Small',
-        photos: expect.arrayContaining([
+        photo: expect.arrayContaining([
           expect.objectContaining({
             url: 'nina-photo.jpg',
           }),
@@ -157,7 +157,7 @@ describe('Search Pets Use Case', () => {
       expect.objectContaining({
         name: 'Nina 00',
         energy_level: 'High',
-        photos: expect.arrayContaining([
+        photo: expect.arrayContaining([
           expect.objectContaining({
             url: 'nina-photo.jpg',
           }),
@@ -175,7 +175,7 @@ describe('Search Pets Use Case', () => {
       expect.objectContaining({
         name: 'Nina 00',
         environment: 'Apartment',
-        photos: expect.arrayContaining([
+        photo: expect.arrayContaining([
           expect.objectContaining({
             url: 'nina-photo.jpg',
           }),
@@ -226,7 +226,7 @@ describe('Search Pets Use Case', () => {
       expect.objectContaining({
         name: 'Nina',
         age: 'Puppy',
-        photos: expect.arrayContaining([
+        photo: expect.arrayContaining([
           expect.objectContaining({
             url: 'nina-photo.jpg',
           }),

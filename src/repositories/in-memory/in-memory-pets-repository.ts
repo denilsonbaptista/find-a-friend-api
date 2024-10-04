@@ -26,7 +26,7 @@ export class InMemoryPetsRepository implements PetsRepository {
   async searchMany(
     query: SearchManyParams,
     page: number
-  ): Promise<(Pet & { photos: Photo[] })[]> {
+  ): Promise<(Pet & { photo: Photo[] })[]> {
     if (!this.organizationsRepository) {
       return []
     }
@@ -52,13 +52,13 @@ export class InMemoryPetsRepository implements PetsRepository {
       .filter(item => item.adoption_at === null)
 
     const petsWithPhotos = pets.map(pet => {
-      const photos =
+      const photo =
         this.photosRepository?.items.filter(photo => photo.pet_id === pet.id) ||
         []
 
       return {
         ...pet,
-        photos,
+        photo,
       }
     })
 

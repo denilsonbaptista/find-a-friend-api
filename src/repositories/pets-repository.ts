@@ -12,7 +12,7 @@ export type PetsRepository = {
   searchMany(
     query: SearchManyParams,
     page: number
-  ): Promise<(Pet & { photos: Photo[] })[]>
+  ): Promise<(Pet & { photo: Photo[] })[]>
   findById(id: string): Promise<Pet | null>
   create(data: Prisma.PetUncheckedCreateInput): Promise<Pet>
 }
