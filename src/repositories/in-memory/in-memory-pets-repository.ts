@@ -49,6 +49,7 @@ export class InMemoryPetsRepository implements PetsRepository {
       .filter(item =>
         query.environment ? item.environment === query.environment : true
       )
+      .filter(item => item.adoption_at === null)
 
     const petsWithPhotos = pets.map(pet => {
       const photos =

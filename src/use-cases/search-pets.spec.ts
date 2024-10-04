@@ -37,6 +37,17 @@ describe('Search Pets Use Case', () => {
       whatsapp: '+5511999999999',
     })
 
+    await petsRepository.create({
+      name: 'Nina Adopted',
+      about: 'Nina is a very cute little dog',
+      age: 'Puppy',
+      size: 'Small' as const,
+      energy_level: 'High' as const,
+      environment: 'Apartment',
+      organization_id: organization.id,
+      adoption_at: new Date('2023-01-01'),
+    })
+
     for (let i = 0; i < 3; i++) {
       const pet = await petsRepository.create({
         name: `Nina 0${i}`,
@@ -64,6 +75,12 @@ describe('Search Pets Use Case', () => {
       environment: 'Apartment',
       page: 1,
     })
+
+    expect(searchByFull.pets).not.toEqual(
+      expect.objectContaining({
+        name: 'Nina Adopted',
+      })
+    )
 
     expect(searchByFull.pets[0]).toEqual(
       expect.objectContaining({
