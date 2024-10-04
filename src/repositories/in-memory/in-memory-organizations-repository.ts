@@ -1,7 +1,11 @@
 import { randomUUID } from 'node:crypto'
 
+import { getDistanceBetweenCoordinates } from '@/utils/get-distance-between-coordinates'
 import { type Organization, Prisma } from '@prisma/client'
-import type { OrganizationsRepository } from '../organizations-repository'
+import type {
+  FindManyNearbyParams,
+  OrganizationsRepository,
+} from '../organizations-repository'
 
 export class InMemoryOrganizationsRepository
   implements OrganizationsRepository
@@ -26,6 +30,23 @@ export class InMemoryOrganizationsRepository
     }
 
     return organization
+  }
+
+  async findManyNearby(params: FindManyNearbyParams): Promise<Organization[]> {
+    return this.items.filter(item => {
+      const distance = getDistanceBetweenCoordinates(
+        {
+          latitude: params.latitude,
+          longitude: params.longitude,
+        },
+        {
+          latitude: item.latitude.toNumber(),
+          longitude: item.longitude.toNumber(),
+        }
+      )
+
+      return distance < 10
+    })
   }
 
   async create(data: Prisma.OrganizationCreateInput): Promise<Organization> {
