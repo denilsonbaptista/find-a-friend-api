@@ -12,7 +12,9 @@
     "test:e2e": "vitest run --dir src/http",
     "test:e2e:watch": "vitest --dir src/http",
     "test:create-prisma-environment": "npm link ./prisma/vitest-environment-prisma",
-    "test:install-prisma-environment": "npm link vitest-environment-prisma"
+    "test:install-prisma-environment": "npm link vitest-environment-prisma",
+    "lint": "biome check",
+    "lint:fix": "biome check --write"
   },
   "keywords": [],
   "author": "",
