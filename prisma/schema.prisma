@@ -27,6 +27,12 @@ model Organization {
   @@map("organizations")
 }
 
+enum Age {
+  Puppy
+  Adult
+  Old
+}
+
 enum Size {
   Small
   Medium
@@ -39,14 +45,20 @@ enum EnergyLevel {
   High
 }
 
+enum Environment {
+  Small
+  Medium
+  Large
+}
+
 model Pet {
   id           String      @id @default(uuid())
   name         String
   about        String
-  age          String
+  age          Age
   size         Size
   energy_level EnergyLevel
-  environment  String
+  environment  Environment
   created_at   DateTime    @default(now())
   adoption_at  DateTime?
 
@@ -54,19 +66,8 @@ model Pet {
   organization_id String
 
   requirementsForAdoption RequirementsForAdoption[]
-  photo                   Photo[]
 
   @@map("pets")
-}
-
-model Photo {
-  id  String @id @default(uuid())
-  url String
-
-  pet    Pet    @relation(fields: [pet_id], references: [id])
-  pet_id String
-
-  @@map("photo")
 }
 
 model RequirementsForAdoption {
