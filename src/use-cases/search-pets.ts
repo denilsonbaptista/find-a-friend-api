@@ -1,29 +1,29 @@
 import type { PetsRepository } from '@/repositories/pets-repository'
-import type { Pet, Photo } from '@prisma/client'
+import type { Pet } from '@prisma/client'
 
 import { RequiredFieldError } from './errors/required-field-error'
 
 interface SearchPetsUseCaseRequest {
   city: string
-  age?: string
+  age?: 'Puppy' | 'Adult' | 'Old'
   size?: 'Small' | 'Medium' | 'Large'
-  energyLevel?: 'Low' | 'High' | 'Medium'
-  environment?: string
+  energy?: 'Low' | 'High' | 'Medium'
+  environment?: 'Small' | 'Medium' | 'Large'
   page: number
 }
 
 interface SearchPetsUseCaseResponse {
-  pets: (Pet & { photo: Photo[] })[]
+  pets: Pet[]
 }
 
-export class SearchPets {
+export class SearchPetsUseCase {
   constructor(private petsRepository: PetsRepository) {}
 
   async execute({
     city,
     age,
     size,
-    energyLevel,
+    energy,
     environment,
     page,
   }: SearchPetsUseCaseRequest): Promise<SearchPetsUseCaseResponse> {
@@ -34,7 +34,7 @@ export class SearchPets {
         city,
         age,
         size,
-        energyLevel,
+        energy,
         environment,
       },
       page

@@ -2,24 +2,18 @@ import { beforeEach, describe, expect, it } from 'vitest'
 
 import { InMemoryOrganizationsRepository } from '@/repositories/in-memory/in-memory-organizations-repository'
 import { InMemoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository'
-import { InMemoryPhotosRepository } from '@/repositories/in-memory/in-memory-photos-repository'
 import { RequiredFieldError } from './errors/required-field-error'
-import { SearchPets } from './search-pets'
+import { SearchPetsUseCase } from './search-pets'
 
 let organizationsRepository: InMemoryOrganizationsRepository
-let photosRepository: InMemoryPhotosRepository
 let petsRepository: InMemoryPetsRepository
-let sut: SearchPets
+let sut: SearchPetsUseCase
 
 describe('Search Pets Use Case', () => {
   beforeEach(() => {
     organizationsRepository = new InMemoryOrganizationsRepository()
-    photosRepository = new InMemoryPhotosRepository()
-    petsRepository = new InMemoryPetsRepository(
-      organizationsRepository,
-      photosRepository
-    )
-    sut = new SearchPets(petsRepository)
+    petsRepository = new InMemoryPetsRepository(organizationsRepository)
+    sut = new SearchPetsUseCase(petsRepository)
   })
 
   it('should be able to search for pets by their characteristics', async () => {
@@ -41,38 +35,31 @@ describe('Search Pets Use Case', () => {
       name: 'Nina Adopted',
       about: 'Nina is a very cute little dog',
       age: 'Puppy',
-      size: 'Small' as const,
-      energy_level: 'High' as const,
-      environment: 'Apartment',
+      size: 'Small',
+      energy_level: 'High',
+      environment: 'Small',
       organization_id: organization.id,
       adoption_at: new Date('2023-01-01'),
     })
 
     for (let i = 0; i < 3; i++) {
-      const pet = await petsRepository.create({
+      await petsRepository.create({
         name: `Nina 0${i}`,
         about: 'Nina is a very cute little dog',
         age: 'Puppy',
-        size: 'Small' as const,
-        energy_level: 'High' as const,
-        environment: 'Apartment',
+        size: 'Small',
+        energy_level: 'High',
+        environment: 'Small',
         organization_id: organization.id,
       })
-
-      for (let i = 0; i < 5; i++) {
-        await photosRepository.createUrl({
-          url: 'nina-photo.jpg',
-          pet_id: pet.id,
-        })
-      }
     }
 
     const searchByFull = await sut.execute({
       city: 'São Paulo',
       age: 'Puppy',
       size: 'Small',
-      energyLevel: 'High',
-      environment: 'Apartment',
+      energy: 'High',
+      environment: 'Small',
       page: 1,
     })
 
@@ -86,11 +73,6 @@ describe('Search Pets Use Case', () => {
       expect.objectContaining({
         name: 'Nina 00',
         age: 'Puppy',
-        photo: expect.arrayContaining([
-          expect.objectContaining({
-            url: 'nina-photo.jpg',
-          }),
-        ]),
       })
     )
 
@@ -103,11 +85,6 @@ describe('Search Pets Use Case', () => {
       expect.objectContaining({
         name: 'Nina 00',
         age: 'Puppy',
-        photo: expect.arrayContaining([
-          expect.objectContaining({
-            url: 'nina-photo.jpg',
-          }),
-        ]),
       })
     )
 
@@ -121,11 +98,6 @@ describe('Search Pets Use Case', () => {
       expect.objectContaining({
         name: 'Nina 00',
         age: 'Puppy',
-        photo: expect.arrayContaining([
-          expect.objectContaining({
-            url: 'nina-photo.jpg',
-          }),
-        ]),
       })
     )
 
@@ -139,17 +111,12 @@ describe('Search Pets Use Case', () => {
       expect.objectContaining({
         name: 'Nina 00',
         size: 'Small',
-        photo: expect.arrayContaining([
-          expect.objectContaining({
-            url: 'nina-photo.jpg',
-          }),
-        ]),
       })
     )
 
     const searchByEnergyLevel = await sut.execute({
       city: 'São Paulo',
-      energyLevel: 'High',
+      energy: 'High',
       page: 1,
     })
 
@@ -157,29 +124,19 @@ describe('Search Pets Use Case', () => {
       expect.objectContaining({
         name: 'Nina 00',
         energy_level: 'High',
-        photo: expect.arrayContaining([
-          expect.objectContaining({
-            url: 'nina-photo.jpg',
-          }),
-        ]),
       })
     )
 
     const searchByEnvironment = await sut.execute({
       city: 'São Paulo',
-      environment: 'Apartment',
+      environment: 'Small',
       page: 1,
     })
 
     expect(searchByEnvironment.pets[0]).toEqual(
       expect.objectContaining({
         name: 'Nina 00',
-        environment: 'Apartment',
-        photo: expect.arrayContaining([
-          expect.objectContaining({
-            url: 'nina-photo.jpg',
-          }),
-        ]),
+        environment: 'Small',
       })
     )
   })
@@ -200,19 +157,14 @@ describe('Search Pets Use Case', () => {
     })
 
     for (let i = 0; i < 25; i++) {
-      const pet = await petsRepository.create({
+      await petsRepository.create({
         name: 'Nina',
         about: 'Nina is a very cute little dog',
         age: 'Puppy',
-        size: 'Small' as const,
-        energy_level: 'High' as const,
-        environment: 'Apartment',
+        size: 'Small',
+        energy_level: 'High',
+        environment: 'Small',
         organization_id: organization.id,
-      })
-
-      await photosRepository.createUrl({
-        url: 'nina-photo.jpg',
-        pet_id: pet.id,
       })
     }
 
@@ -226,11 +178,6 @@ describe('Search Pets Use Case', () => {
       expect.objectContaining({
         name: 'Nina',
         age: 'Puppy',
-        photo: expect.arrayContaining([
-          expect.objectContaining({
-            url: 'nina-photo.jpg',
-          }),
-        ]),
       })
     )
   })

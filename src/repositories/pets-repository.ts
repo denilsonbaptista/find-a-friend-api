@@ -2,17 +2,14 @@ import type { Pet, Photo, Prisma } from '@prisma/client'
 
 export type SearchManyParams = {
   city: string
-  age?: string
+  age?: 'Puppy' | 'Adult' | 'Old'
   size?: 'Small' | 'Medium' | 'Large'
-  energyLevel?: 'Low' | 'High' | 'Medium'
-  environment?: string
+  energy?: 'Low' | 'High' | 'Medium'
+  environment?: 'Small' | 'Medium' | 'Large'
 }
 
 export type PetsRepository = {
-  searchMany(
-    query: SearchManyParams,
-    page: number
-  ): Promise<(Pet & { photo: Photo[] })[]>
+  searchMany(query: SearchManyParams, page: number): Promise<Pet[]>
   findById(id: string): Promise<Pet | null>
   create(data: Prisma.PetUncheckedCreateInput): Promise<Pet>
 }

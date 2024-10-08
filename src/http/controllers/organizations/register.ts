@@ -8,8 +8,8 @@ import { makeRegisterOrganizationUseCase } from '@/use-cases/factories/make-regi
 export async function register(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
     name: z.string(),
-    email: z.string(),
-    password: z.string(),
+    email: z.string().email(),
+    password: z.string().min(6),
     cep: z.string(),
     city: z.string(),
     state: z.string(),

@@ -8,21 +8,25 @@ export class InMemoryRequirementsForAdoptionRepository
 {
   public items: RequirementsForAdoption[] = []
 
-  async findById(id: string): Promise<RequirementsForAdoption[]> {
-    return this.items.filter(item => item.pet_id.includes(id))
+  async findByPetId(petId: string): Promise<RequirementsForAdoption[]> {
+    return this.items.filter(item => item.pet_id.includes(petId))
   }
 
   async create(
-    data: Prisma.RequirementsForAdoptionUncheckedCreateInput
-  ): Promise<RequirementsForAdoption> {
-    const requirement = {
-      id: randomUUID(),
-      requirement: data.requirement,
-      pet_id: data.pet_id,
-    }
+    data: Prisma.RequirementsForAdoptionCreateManyInput[]
+  ): Promise<RequirementsForAdoption[]> {
+    const requirements = data.map(requirement => {
+      const requirementsForAdoption = {
+        id: randomUUID(),
+        requirement: requirement.requirement,
+        pet_id: requirement.pet_id,
+      }
 
-    this.items.push(requirement)
+      this.items.push(requirementsForAdoption)
 
-    return requirement
+      return requirementsForAdoption
+    })
+
+    return requirements
   }
 }

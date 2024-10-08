@@ -3,12 +3,10 @@ import { randomUUID } from 'node:crypto'
 import type { Pet, Photo, Prisma } from '@prisma/client'
 import type { PetsRepository, SearchManyParams } from '../pets-repository'
 import type { InMemoryOrganizationsRepository } from './in-memory-organizations-repository'
-import type { InMemoryPhotosRepository } from './in-memory-photos-repository'
 
 export class InMemoryPetsRepository implements PetsRepository {
   constructor(
-    private organizationsRepository?: InMemoryOrganizationsRepository,
-    private photosRepository?: InMemoryPhotosRepository
+    private organizationsRepository?: InMemoryOrganizationsRepository
   ) {}
 
   public items: Pet[] = []
@@ -23,10 +21,7 @@ export class InMemoryPetsRepository implements PetsRepository {
     return pet
   }
 
-  async searchMany(
-    query: SearchManyParams,
-    page: number
-  ): Promise<(Pet & { photo: Photo[] })[]> {
+  async searchMany(query: SearchManyParams, page: number): Promise<Pet[]> {
     if (!this.organizationsRepository) {
       return []
     }
@@ -44,25 +39,14 @@ export class InMemoryPetsRepository implements PetsRepository {
       .filter(item => (query.age ? item.age === query.age : true))
       .filter(item => (query.size ? item.size === query.size : true))
       .filter(item =>
-        query.energyLevel ? item.energy_level === query.energyLevel : true
+        query.energy ? item.energy_level === query.energy : true
       )
       .filter(item =>
         query.environment ? item.environment === query.environment : true
       )
       .filter(item => item.adoption_at === null)
 
-    const petsWithPhotos = pets.map(pet => {
-      const photo =
-        this.photosRepository?.items.filter(photo => photo.pet_id === pet.id) ||
-        []
-
-      return {
-        ...pet,
-        photo,
-      }
-    })
-
-    return petsWithPhotos.slice((page - 1) * 20, page * 20)
+    return pets.slice((page - 1) * 20, page * 20)
   }
 
   async create(data: Prisma.PetUncheckedCreateInput): Promise<Pet> {

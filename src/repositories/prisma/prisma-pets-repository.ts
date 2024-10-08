@@ -15,9 +15,9 @@ export class PrismaPetsRepository implements PetsRepository {
   }
 
   async searchMany(
-    { city, age, size, energyLevel, environment }: SearchManyParams,
+    { city, age, size, energy, environment }: SearchManyParams,
     page: number
-  ): Promise<(Pet & { photo: Photo[] })[]> {
+  ): Promise<Pet[]> {
     const pets = await prisma.pet.findMany({
       where: {
         organization: {
@@ -25,12 +25,9 @@ export class PrismaPetsRepository implements PetsRepository {
         },
         age,
         size,
-        energy_level: energyLevel,
+        energy_level: energy,
         environment,
         adoption_at: null,
-      },
-      include: {
-        photo: true,
       },
       take: 20,
       skip: (page - 1) * 20,
