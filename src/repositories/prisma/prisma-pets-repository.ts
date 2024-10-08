@@ -1,4 +1,4 @@
-import type { Pet, Photo, Prisma } from '@prisma/client'
+import type { Pet, Prisma } from '@prisma/client'
 import type { PetsRepository, SearchManyParams } from '../pets-repository'
 
 import { prisma } from '@/lib/prisma'

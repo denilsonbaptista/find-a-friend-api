@@ -4,7 +4,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify'
 
 import { makeCreateRequirementsForAdoptionUseCase } from '@/use-cases/factories/make-create-requirements-for-adoption-use-case'
 
-export async function createRequirementsForAdoption(
+export async function requirementsForAdoption(
   request: FastifyRequest,
   reply: FastifyReply
 ) {

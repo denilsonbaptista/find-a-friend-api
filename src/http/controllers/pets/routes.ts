@@ -1,9 +1,9 @@
 import type { FastifyInstance } from 'fastify'
 
 import { verifyJwt } from '@/http/middlewares/verify-jwt'
-import { createRequirementsForAdoption } from './create-requirements-for-adoption'
 import { pet } from './pet'
 import { register } from './register'
+import { requirementsForAdoption } from './requirements-for-adoption'
 import { search } from './search'
 
 export async function petsRoutes(app: FastifyInstance) {
@@ -11,7 +11,7 @@ export async function petsRoutes(app: FastifyInstance) {
   app.post(
     '/register/pets/:petId/requirements-for-adoption',
     { onRequest: [verifyJwt] },
-    createRequirementsForAdoption
+    requirementsForAdoption
   )
 
   app.get('/pet/:petId', pet)
